@@ -31,10 +31,26 @@ include 'storedInfo.php';
 		}
 
 		else{
-
+			$grab_name = $_POST['vid_name'];
+			$grab_cat = $_POST['vid_cat'];
+			$grab_len = $_POST['vid_len'];
+			$mysqli = new mysqli("oniddb.cws.oregonstate.edu","millerer-db",$password,"millerer-db");
+			if ($mysqli->connect_errno) {
+				echo"My SQL connection failed.";
+			}
+			else{
+				if(!($stmt = $mysqli->prepare("INSERT INTO php_assignment(name,category,length) VALUES(?,?,?)"))){
+					echo "Prepare Failed<br>";
+				}
+				if(!($stmt->bind_param('sss',$grab_name,$grab_cat,$grab_len))){ //syntax from http://us2.php.net/manual/en/mysqli-stmt.bind-param.php
+					echo "Bind Failed<br>";
+				}
+				if (!$stmt->execute()) {
+						echo "Execute failed<br>";
+					}
+			}
 		}
 	}
-	
 	
 	//below SQL connection code and syntax from week 6 lecture
 	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","millerer-db",$password,"millerer-db");
@@ -49,7 +65,6 @@ include 'storedInfo.php';
 		if(!($stmt->execute())){
 			echo "Execute failed";
 		}
-		$res = $stmt->get_result();
 		$out_id = null;
 		$out_name = null;
 		$out_category = null;
@@ -61,16 +76,16 @@ include 'storedInfo.php';
 		echo '<p><h2>Videos</h2><p>
 			  <table border="1">
 			  <tr><td>ID<td>Name<td>Category<td>Length<td>Rented';
-		$i = 0; //used for marking rows in HTML so that they can be reference later
-		/*while ($stmt->fetch()){
-			echo "<tr> <td>".$out_id."<td>".$out_name."<td>".$out_category."<td>".$out_length"<td>".$out_rented.
-				"<form name = \"post_form".$out_id."\" method = \post\">
-				<input type=\"submit".$out_id."\" value =\"Delete\" name=\"".$out_id."\" />
+		while ($stmt->fetch()){
+			echo '<tr> <td>'.$out_id.'<td>'.$out_name.'<td>'.$out_category.'<td>'.$out_length.'<td>'.$out_rented.
+				'<td><form name = \"post_form'.$out_id.'\" method = \"post\">
+				<p><input type="submit" value =Delete name="'.$out_id.'" /><p>
+				<p><input type="submit" value = "Check in / out" name='.$out_id.'" /><p>
 				</form>
-				<br>";*/
+				<br>';
+		}
+
 	}
-
-
 ?>
     </div>
 </body>
