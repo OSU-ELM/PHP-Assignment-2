@@ -59,9 +59,45 @@ include 'storedInfo.php';
 	}
 	else{ //code in this block from http://us2.php.net/manual/en/mysqli.quickstart.prepared-statements.php as well as week 6 lecture
 		echo "CONNECTED TO SQL! <br>";
-		if(!($stmt = $mysqli->prepare("SELECT id, name, category, length, rented FROM php_assignment"))){
+		$out_category = null;
+		if(!($stmt = $mysqli->prepare("SELECT category FROM php_assignment GROUP BY category"))){
 			echo "Prepare Failed";
 		}
+		if(!($stmt->execute())){
+			echo "Execute failed";
+		}
+		if (!($stmt->bind_result($out_category))){
+			echo "Binding failed";
+		}
+		echo '<form name ="get_cat" method ="post" 
+		     <p>
+			 <select name="Categories" >
+			 <option value="All" selected = "selected">All</option>"';
+		
+		while ($stmt->fetch()){
+			echo '<option value="'.$out_category.'">'.$out_category.'</option>"';
+		}
+		echo '</select>
+			 <p>
+			 <input type ="submit" value = "Filter Results">
+			 </form>';
+		echo '<form name = "delete_all_form" method = "post" action = \'DeleteAll.php\'>
+				<p>
+				<input type="submit" value ="Delete All Rows">
+				</form>';
+		
+		$stmt->close();
+
+		$selection = "";
+		if (isset($_POST['Categories']) && $_POST['Categories'] != "All"){ //syntax form http://www.homeandlearn.co.uk/php/php4p7.html
+			$Post_data = $_POST['Categories'];
+			$Post_data = "\"".$Post_data."\"";
+			$selection = ' WHERE category ='.$Post_data;
+		}
+		if(!($stmt = $mysqli->prepare("SELECT id, name, category, length, rented FROM php_assignment".$selection))){
+			echo "Prepare Failed";
+		}
+
 		if(!($stmt->execute())){
 			echo "Execute failed";
 		}
