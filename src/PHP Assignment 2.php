@@ -73,19 +73,37 @@ include 'storedInfo.php';
 		if (!($stmt->bind_result($out_id, $out_name, $out_category, $out_length, $out_rented))){
 			echo "Binding failed";
 		}
+		
 		echo '<p><h2>Videos</h2><p>
 			  <table border="1">
 			  <tr><td>ID<td>Name<td>Category<td>Length<td>Rented';
 		while ($stmt->fetch()){
-			echo '<tr> <td>'.$out_id.'<td>'.$out_name.'<td>'.$out_category.'<td>'.$out_length.'<td>'.$out_rented.
-				'<td><form name = \"post_form'.$out_id.'\" method = \"post\">
-				<p><input type="submit" value =Delete name="'.$out_id.'" /><p>
-				<p><input type="submit" value = "Check in / out" name='.$out_id.'" /><p>
+			$checkin ='';
+			if ($out_rented == 0){
+				$checkin = "checked in";
+			}
+			else {
+				$checkin = "checked out";
+			}
+			echo '<tr> <td>'.$out_id.'<td>'.$out_name.'<td>'.$out_category.'<td>'.$out_length.'<td>'.$checkin.'<td>
+			    <form name = "delete_form" method = "post" action = \'deleterow.php\'>
+				<p>
+				<input type="submit" value =Delete>
+				<input type="hidden" name="input" value="'.$out_id.'">
+				<p>
 				</form>
-				<br>';
+				<form name = "checkin_form" method = "post" action = \'editPage.php\'>
+				<p>
+				<input type="submit" value =Check in/out>
+				<input type="hidden" name="input" value="'.$out_id.'">
+				<p>
+				</form>
+				<br>'; //some coding ideas, like using a separate php page to handle button output from this site: http://stackoverflow.com/questions/17144846/add-delete-button-to-php-results-table
+					   //'Hidden' syntax from http://stackoverflow.com/questions/11013154/submit-buttons-button-text-different-from-value
 		}
 
 	}
+
 ?>
     </div>
 </body>
