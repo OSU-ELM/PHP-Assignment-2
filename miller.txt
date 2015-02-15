@@ -1,0 +1,16 @@
+
+Start: Sat, 14 Feb 2015 13:00:00 -0800
+End: Sat, 14 Feb 2015 15:43:24 -0800
+Tasks: Added ability to delete one or all rows, and filter by movie category
+
+Start: Fri, 13 Feb 2015 20:00:00 -0800
+End: Fri, 13 Feb 2015 23:26:26 -0800
+Tasks: Added ability to check in and out videos
+
+Start: Thu, 12 Feb 2015 21:00:00 -0800
+End: Thu, 12 Feb 2015 21:49:35 -0800
+Tasks: Added ability to create new DB entries into the code
+
+Start: Thu, 12 Feb 2015 14:00:00 -0800
+End: Thu, 12 Feb 2015 20:17:06 -0800
+Tasks: First commit of the day, but worked for awhile on setting up the base HTML
